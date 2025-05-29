@@ -1,11 +1,13 @@
 import { App, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { EcommerceDynamoTable } from './constructs/ecommerce-dynamo-table';
 
-export class MyStack extends Stack {
+export class ECommerceServiceStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    // define resources here...
+    // Create the DynamoDB table for the e-commerce service
+    new EcommerceDynamoTable(this, 'EcommerceTable');
   }
 }
 
@@ -17,7 +19,7 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'AWS-Api-With-Cognito-dev', { env: devEnv });
-// new MyStack(app, 'AWS-Api-With-Cognito-prod', { env: prodEnv });
+new ECommerceServiceStack(app, 'AWS-Api-With-Cognito-dev', { env: devEnv });
+// new EEcommerceServiceStack(app, 'AWS-Api-With-Cognito-prod', { env: prodEnv });
 
 app.synth();
