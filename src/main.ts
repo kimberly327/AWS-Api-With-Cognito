@@ -1,13 +1,26 @@
-import { App, Stack, StackProps } from 'aws-cdk-lib';
+import { App, Stack, StackProps, CfnOutput } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { EcommerceDynamoTable } from './constructs/ecommerce-dynamo-table';
+import { EcommerceRestApi } from './constructs/ecommerce-rest-api';
+
+export interface ECommerceServiceStackProps extends StackProps {
+  stage: string;
+}
 
 export class ECommerceServiceStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps = {}) {
+  constructor(scope: Construct, id: string, props: ECommerceServiceStackProps) {
     super(scope, id, props);
 
     // Create the DynamoDB table for the e-commerce service
-    new EcommerceDynamoTable(this, 'EcommerceTable');
+    new EcommerceDynamoTable(this, `EcommerceTable-${props.stage}`, { stage: props.stage });
+    // Create the REST API for the e-commerce service
+    const restApi = new EcommerceRestApi(this, `EcommerceRestApi-${props.stage}`, { stage: props.stage });
+
+    // Output the API endpoint URL
+    new CfnOutput(this, 'RestApiEndpoint', {
+      value: restApi.api.url,
+      description: 'Endpoint URL for the Ecommerce REST API',
+    });
   }
 }
 
@@ -19,7 +32,7 @@ const devEnv = {
 
 const app = new App();
 
-new ECommerceServiceStack(app, 'AWS-Api-With-Cognito-dev', { env: devEnv });
-// new EEcommerceServiceStack(app, 'AWS-Api-With-Cognito-prod', { env: prodEnv });
+new ECommerceServiceStack(app, 'AWS-Api-With-Cognito-dev', { ...devEnv, stage: 'dev' });
+// new EEcommerceServiceStack(app, 'AWS-Api-With-Cognito-prod', { env: prodEnv, stage: 'prod' });
 
 app.synth();

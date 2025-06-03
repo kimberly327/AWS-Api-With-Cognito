@@ -2,6 +2,61 @@
 
 exports[`Snapshot 1`] = `
 {
+  "Outputs": {
+    "EcommerceRestApitestEndpoint0CCE8E3A": {
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "EcommerceRestApitest9F01DC4E",
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "EcommerceRestApitestDeploymentStageprod8694A8EB",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+    "RestApiEndpoint": {
+      "Description": "Endpoint URL for the Ecommerce REST API",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "EcommerceRestApitest9F01DC4E",
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            {
+              "Ref": "EcommerceRestApitestDeploymentStageprod8694A8EB",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
   "Parameters": {
     "BootstrapVersion": {
       "Default": "/cdk-bootstrap/hnb659fds/version",
@@ -10,7 +65,157 @@ exports[`Snapshot 1`] = `
     },
   },
   "Resources": {
-    "EcommerceTableBA51E47C": {
+    "EcommerceRestApitest9F01DC4E": {
+      "Properties": {
+        "Description": "REST API for the ecommerce platform - test",
+        "EndpointConfiguration": {
+          "Types": [
+            "REGIONAL",
+          ],
+        },
+        "Name": "Ecommerce Service - test",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "EcommerceRestApitestAccountABB22701": {
+      "DeletionPolicy": "Retain",
+      "DependsOn": [
+        "EcommerceRestApitest9F01DC4E",
+      ],
+      "Properties": {
+        "CloudWatchRoleArn": {
+          "Fn::GetAtt": [
+            "EcommerceRestApitestCloudWatchRoleCDAB70F2",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "EcommerceRestApitestCloudWatchRoleCDAB70F2": {
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "EcommerceRestApitestDeployment78CBB6C99be3219781dd477295346151a0283f50": {
+      "DependsOn": [
+        "EcommerceRestApitestuserdetailsGET36B2A735",
+        "EcommerceRestApitestuserdetails2FD08C30",
+        "EcommerceRestApitestuser4FDA120C",
+      ],
+      "Properties": {
+        "Description": "REST API for the ecommerce platform - test",
+        "RestApiId": {
+          "Ref": "EcommerceRestApitest9F01DC4E",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "EcommerceRestApitestDeploymentStageprod8694A8EB": {
+      "DependsOn": [
+        "EcommerceRestApitestAccountABB22701",
+      ],
+      "Properties": {
+        "DeploymentId": {
+          "Ref": "EcommerceRestApitestDeployment78CBB6C99be3219781dd477295346151a0283f50",
+        },
+        "RestApiId": {
+          "Ref": "EcommerceRestApitest9F01DC4E",
+        },
+        "StageName": "prod",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "EcommerceRestApitestuser4FDA120C": {
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "EcommerceRestApitest9F01DC4E",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "user",
+        "RestApiId": {
+          "Ref": "EcommerceRestApitest9F01DC4E",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "EcommerceRestApitestuserdetails2FD08C30": {
+      "Properties": {
+        "ParentId": {
+          "Ref": "EcommerceRestApitestuser4FDA120C",
+        },
+        "PathPart": "details",
+        "RestApiId": {
+          "Ref": "EcommerceRestApitest9F01DC4E",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "EcommerceRestApitestuserdetailsGET36B2A735": {
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": {
+          "IntegrationResponses": [
+            {
+              "ResponseTemplates": {
+                "application/json": "{ "message": "User details" }",
+              },
+              "StatusCode": "200",
+            },
+          ],
+          "PassthroughBehavior": "NEVER",
+          "RequestTemplates": {
+            "application/json": "{"statusCode": 200}",
+          },
+          "Type": "MOCK",
+        },
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+          },
+        ],
+        "ResourceId": {
+          "Ref": "EcommerceRestApitestuserdetails2FD08C30",
+        },
+        "RestApiId": {
+          "Ref": "EcommerceRestApitest9F01DC4E",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "EcommerceTabletest09D704CE": {
       "DeletionPolicy": "Retain",
       "Properties": {
         "AttributeDefinitions": [
@@ -26,7 +231,7 @@ exports[`Snapshot 1`] = `
         "BillingMode": "PAY_PER_REQUEST",
         "GlobalSecondaryIndexes": [
           {
-            "IndexName": "GSI1",
+            "IndexName": "GSI-Items",
             "KeySchema": [
               {
                 "AttributeName": "SK",
@@ -52,6 +257,7 @@ exports[`Snapshot 1`] = `
             "KeyType": "RANGE",
           },
         ],
+        "TableName": "EcommerceTable-test",
       },
       "Type": "AWS::DynamoDB::Table",
       "UpdateReplacePolicy": "Retain",

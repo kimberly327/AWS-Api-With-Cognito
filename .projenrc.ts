@@ -1,6 +1,7 @@
 import { awscdk } from 'projen';
 const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: '2.1.0',
+  cdkVersion: '2.200.1',
+  cdkCliVersion: '2.1017.0',
   defaultReleaseBranch: 'main',
   name: 'AWS-Api-With-Cognito',
   projenrcTs: true,

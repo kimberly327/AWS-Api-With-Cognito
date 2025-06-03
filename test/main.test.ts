@@ -4,7 +4,7 @@ import { ECommerceServiceStack } from '../src/main';
 
 test('Snapshot', () => {
   const app = new App();
-  const stack = new ECommerceServiceStack(app, 'test');
+  const stack = new ECommerceServiceStack(app, 'test', { stage: 'test' });
 
   const template = Template.fromStack(stack);
   expect(template.toJSON()).toMatchSnapshot();
