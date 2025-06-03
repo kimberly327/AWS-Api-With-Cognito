@@ -8,7 +8,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "lib": [
-      "es2022"
+      "es2021"
     ],
     "module": "NodeNext",
     "noEmitOnError": false,
@@ -27,7 +27,8 @@
     "moduleResolution": "nodenext",
     "typeRoots": [
       "./node_modules/@types"
-    ]
+    ],
+    "rootDir": "./"
   },
   "include": [
     "src/**/*.ts",
