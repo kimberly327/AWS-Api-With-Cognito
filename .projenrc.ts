@@ -1,16 +1,16 @@
-import { awscdk } from 'projen';
+import { awscdk } from "projen";
 const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: '2.200.1',
-  cdkCliVersion: '2.1017.0',
-  defaultReleaseBranch: 'main',
-  name: 'AWS-Api-With-Cognito',
+  cdkVersion: "2.200.1",
+  cdkCliVersion: "2.1017.0",
+  defaultReleaseBranch: "main",
+  name: "AWS-Api-With-Cognito",
   projenrcTs: true,
   prettier: true,
   tsconfig: {
-    include: ['test/**/*.ts'],
+    include: ["test/**/*.ts"],
     compilerOptions: {
-      rootDir: './',
-      lib: ['es2021'],
+      rootDir: "./",
+      lib: ["es2021"],
     },
   },
 
