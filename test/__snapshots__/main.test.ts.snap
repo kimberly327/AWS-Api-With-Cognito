@@ -132,6 +132,9 @@ exports[`Snapshot 1`] = `
         "EcommerceRestApitestuserdetails2FD08C30",
         "EcommerceRestApitestuser4FDA120C",
       ],
+      "Metadata": {
+        "aws:cdk:do-not-refactor": true,
+      },
       "Properties": {
         "Description": "REST API for the ecommerce platform - test",
         "RestApiId": {
